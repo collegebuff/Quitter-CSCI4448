@@ -1,1 +1,89 @@
+*.conf
+*.gnip
+*.log
+#Data
+<<<<<<< HEAD
+analysis/sentiment_analysis/data
+analysis/sentiment_analysis/sample/*.p
+=======
+training_set.csv
+sentiment_analysis/data/*
+>>>>>>> feature/sentiment
+# C extensions
+gnip_search/*.so
+
+# Packages
+*.egg
+*.egg-info
+gnip_search/dist
+gnip_search/build
+gnip_search/eggs
+gnip_search/parts
+gnip_search/bin
+gnip_search/var
+gnip_search/sdist
+gnip_search/develop-eggs
+gnip_search/.installed.cfg
+gnip_search/lib
+gnip_search/lib64
+
+# Installer logs
+gnip_search/pip-log.txt
+
+# Unit test / coverage reports
+gnip_search/.coverage
+gnip_search/.tox
+gnip_search/nosetests.xml
+
+# Translations
+*.mo
+
+# Mr Developer
+gnip_search/.mr.developer.cfg
+gnip_search/.project
+gnip_search/.pydevproject
+gnip_search/MANIFEST
+
+#Node Modules
+web_frontend/node_modules
+
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+*.sqlite3
+
+# OS generated files #
+######################
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
