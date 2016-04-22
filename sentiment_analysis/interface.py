@@ -35,6 +35,33 @@ def predictTweet(string):
             label_to_prob[labels[i]] = prob_pred[0][i]
     return label_to_prob
 
+def predictList(tweetList):
+    probList = []
+    if model not in models:
+        print "Model not in memory: ", model
+        print "Loading model"
+        models[model]=pickle.load(open(model,"rb"))
+        if(load_word_vecs):
+            print "Adding wordvecs"
+            models[model].add_global_word_vecs(wordvecs)
+        print "Done"
+
+    if preprocess == True:
+        for tweet in tweetList:
+            tweet = clean_str(tweet.lower())
+    for tweet in tweetList:
+        [y_pred,prob_pred] = models[model].classify([{'text':tweet}])
+        labels = models[model].labels
+        label_to_prob={}
+        for i in range(len(labels)):
+            if(isinstance(prob_pred[0][i], numpy.float32) or isinstance(prob_pred[0][i], numpy.float64)):
+                label_to_prob[labels[i]]=prob_pred[0][i].item()
+            else:
+                label_to_prob[labels[i]] = prob_pred[0][i]
+        probList.append(label_to_prob)
+
+    return probList    
+
 
 
 class LimitedSizeDict(OrderedDict):
