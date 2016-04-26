@@ -1,0 +1,1 @@
+INDEX VERSION 1.3+C:\Users\Loic\git\Quitter-CSCI4448\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes

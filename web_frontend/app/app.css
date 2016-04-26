@@ -30,8 +30,8 @@
 }
 
 .navbar-default {
-    background-color: #AD0000;
-    border-color: #820000;
+    background-color: #C6151D;
+    border-color: #666666;
 }
 
 .navbar-default .navbar-brand {
@@ -60,6 +60,7 @@
 }
 
 .map-title {
+    color: white;
     font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', Charcoal, 'Helvetica Inserat', 'Bitstream Vera Sans Bold', 'Arial Black', 'sans serif';
 	font-size: 35px;
 	font-style: normal;
@@ -138,4 +139,94 @@ psuedo element with clearfix and display: table; , all after (which is why I kno
 	font-variant: normal;
 	font-weight: 500;
 	line-height: 26.4px;
-}  
+}
+
+* {
+    margin: 0;
+}
+html, body {
+    height: 100%;
+}
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -4em;
+}
+.footer, .push {
+    height: 4em;
+}
+.no-border {
+    border-bottom: none;
+}
+
+.circular-obama{
+    width: 300px;
+    height: 300px;
+    left: 100px;
+    border-radius: 150px;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
+    display: inline-block;
+    background: url('img/lessPartyBroEdited.jpg') no-repeat;
+    background-size: 100%;
+    margin: 0 auto;
+    vertical-align:middle;
+
+}
+
+.circular-trump{
+    width: 150px;
+    height: 150px;
+    left: 100px;
+    border-radius: 150px;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
+    display: inline-block;
+    background: url('img/Trump.jpg') no-repeat;
+    background-size: 100%;
+    margin: 0 auto;
+    vertical-align:middle;
+}
+
+.circular-hillary{
+    width: 150px;
+    height: 150px;
+    left: 100px;
+    border-radius: 150px;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
+    display: inline-block;
+    background: url('img/crazyClinton.jpg') no-repeat;
+    background-size: 100%;
+    margin: 0 auto;
+    vertical-align:middle;
+}
+
+.circular-cruz{
+    width: 150px;
+    height: 150px;
+    left: 100px;
+    border-radius: 150px;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
+    display: inline-block;
+    background: url('img/Cruz.jpg') no-repeat;
+    background-size: 100%;
+    margin: 0 auto;
+    vertical-align:middle;
+}
+
+.circular-bernie{
+    width: 150px;
+    height: 150px;
+    left: 100px;
+    border-radius: 150px;
+    -webkit-border-radius: 150px;
+    -moz-border-radius: 150px;
+    display: inline-block;
+    background: url('img/Bernie.jpg') no-repeat;
+    background-size: 100%;
+    margin: 0 auto;
+    vertical-align:middle;
+}
