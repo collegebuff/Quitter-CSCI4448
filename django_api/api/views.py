@@ -38,24 +38,9 @@ def get_candidate(candidate_name):
 
 def candidate_list(request, candidate_name):
     if request.method == 'GET':
-        candidate = get_candidate(candidate_name).objects.all()[:50]
+        candidate = get_candidate(candidate_name).objects.all()[:30]
         serializer = CandidateSerializer(candidate, many=True)                                                                                                                                      
         return Response(serializer.data)
-    elif request.method == 'POST':
-        candidate = get_candidate_instance(candidate_name)
-        serializer = CandidateSerializer(data=request.DATA)
-        if serializer.is_valid():
-            candidate.candidate = serializer.data['candidate']
-            candidate.created_at = serializer.data['created_at']
-            candidate.sentiment = serializer.data['sentiment']
-            candidate.text = serializer.data['text']
-            candidate.user = serializer.data['user']
-            candidate.tid = serializer.data['tid']
-            candidate.tone = serializer.data['tone']
-            candidate.save()
-            return Response(
-                status=status.HTTP_201_CREATED
-            )
 
 @api_view(['GET'])
 @permission_classes((AllowAny,))
@@ -86,3 +71,11 @@ def democrat_list(request):
 @permission_classes((AllowAny,))
 def republican_list(request):
     return candidate_list(request, 'Republican')
+
+@api_view(['GET'])
+@permission_classes((AllowAny,))
+def aggregate_list(request) :
+    if request.method == 'GET':
+        aggregate = Aggregate.objects.all()
+        serializer = AggregateSerializer(aggregate, many=True)                                                                                                                                      
+        return Response(serializer.data)
