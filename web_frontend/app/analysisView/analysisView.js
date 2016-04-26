@@ -1,138 +1,293 @@
 'use strict';
 
-angular.module('myApp.analysisView', ['ngRoute', 'highcharts-ng', "ngTable"])
+angular.module('myApp.analysisView', ['ngRoute', 'highcharts-ng', "ngTable", 'ngtweet'])
 
 .config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/analysisView', {
+  $routeProvider.when('/analysisView/:viewParam', {
     templateUrl: 'analysisView/analysisView.html',
     controller: 'AnalysisViewCtrl'
   });
 }])
 
-.controller('AnalysisViewCtrl', ['$scope', 'NgTableParams', 'cartelAPIAll', function($scope, NgTableParams, cartelAPIAll) {
+.controller('AnalysisViewCtrl', ['$scope', 'NgTableParams', 'cartelAPITrump', 'cartelAPIHillary', 'cartelAPIBernie', 'cartelAPICruz', 'cartelAPIDemocrat', 'cartelAPIRepublican', '$http', '$routeParams',
+                                 function($scope, NgTableParams, cartelAPITrump, cartelAPIHillary, cartelAPIBernie, cartelAPICruz, cartelAPIDemocrat, cartelAPIRepublican, $http, $routeParams) {
 
-	$scope.dataLoaded = true;
+	$scope.dataLoaded = false;
+	$scope.hideChart = true;
+	
+	var view = $routeParams.viewParam;
 	
     $scope.options = {
         type: 'column'
     }
     
-    $scope.highchartsNG = {
-	        options: {
-	            chart: {
-	                type: 'column',
-	                marginTop: 50
-	            }
-	        },
-	        series: [{
-	        	name: "Sample1 Sentiment Analysis",
-	            data: [10, 15, 12, 8, 7, 1, 15, 10 , 8, 13]
-	        },
-	        {
-	        	name: "Sample2 Sentiment Analysis",
-	            data: [8, 10, 6, 15, -1, 0, 3, 18 , 20, 10]
-	        }],
-	        yAxis: {
-	            title: {
-	                text: 'Sentiment'
-	            }
-	        },
-	        title: {
-	            text: 'Twitter Results for Sample1, Sample2'
-	        },
-	        xAxis: {
-	            categories: [
-	                'Jan',
-	                'Feb',
-	                'Mar',
-	                'Apr',
-	                'May',
-	                'Jun',
-	                'Jul',
-	                'Aug',
-	                'Sep',
-	                'Oct',
-	                'Nov',
-	                'Dec'
-	            ],
-	            crosshair: true
-	        },
-	        loading: false
-	    }
+    $scope.chartTitle = null;
+    $scope.tableData = null;
+    $scope.color = null;
     
-    var data = [
-            {
-    			link: "FMA_TEST",
-    			text: "Blase Blase Blase"
-    		},
-    		{
-    			link: "FMA_TEST",
-    			text: "Blase Blase Blase"
+    switch (view) {
+    	case "trump":
+    		$scope.chartTitle = "Donald Trump";
+    		cartelAPITrump.queryAll()
+	    		.$promise.then(
+	    			function( value ) {
+	    				$scope.tableData = value;
+	    				$scope.color = "#C6151D";
+	    				$scope.buildChartBar();
+	    			},
+	    			function( error ) {
+	    				console.log( "Bad Request" );
+	    			}
+	    	);
+    		break;
+    	case "clinton":
+    		$scope.chartTitle = "Hillary Clinton";
+    		cartelAPIHillary.queryAll()
+	    		.$promise.then(
+	    			function( value ) {
+	    				$scope.tableData = value;
+	    				$scope.color = "#C6151D";
+	    				$scope.buildChartBar();
+	    			},
+	    			function( error ) {
+	    				console.log( "Bad Request" );
+	    			}
+	    	);
+    		break;
+    	case "sanders":
+    		$scope.chartTitle = "Bernie Sanders";
+    		cartelAPIBernie.queryAll()
+	    		.$promise.then(
+	    			function( value ) {
+	    				$scope.tableData = value;
+	    				$scope.color = "#C6151D";
+	    				$scope.buildChartBar();
+	    			},
+	    			function( error ) {
+	    				console.log( "Bad Request" );
+	    			}
+	    	);
+    		break;
+    	case "cruz":
+    		$scope.chartTitle = "Ted Cruz";
+    		cartelAPICruz.queryAll()
+	    		.$promise.then(
+	    			function( value ) {
+	    				$scope.tableData = value;
+	    				$scope.color = "#C6151D";
+	    				$scope.buildChartBar();
+	    			},
+	    			function( error ) {
+	    				console.log( "Bad Request" );
+	    			}
+	    	);
+    		break;
+    	case "democrat":
+    		$scope.chartTitle = "Democrat";
+    		cartelAPIDemocrat.queryAll()
+	    		.$promise.then(
+	    			function( value ) {
+	    				$scope.tableData = value;
+	    				$scope.color = "#C6151D";
+	    				$scope.buildChartBar();
+	    			},
+	    			function( error ) {
+	    				console.log( "Bad Request" );
+	    			}
+	    	);
+    		break;
+    	case "republican":
+    		$scope.chartTitle = "Republican";
+    		cartelAPIRepublican.queryAll()
+	    		.$promise.then(
+	    			function( value ) {
+	    				$scope.tableData = value;
+	    				$scope.color = "#C6151D";
+	    				$scope.buildChartBar();
+	    			},
+	    			function( error ) {
+	    				console.log( "Bad Request" );
+	    			}
+	    	);
+    		break;
+    }
+    
+    $scope.buildChartBar = function() {
+    	
+    	$scope.tweetIDs1 = [];
+    	$scope.tweetIDs2 = [];
+    	
+    	var tweetsLength = $scope.tableData.length
+    	
+    	for (var i = 0; i < tweetsLength; i++) {
+    		if ( i < (tweetsLength / 2) ) {
+    			$scope.tweetIDs1.push($scope.tableData[i].tid);
+    		} else {
+    			$scope.tweetIDs2.push($scope.tableData[i].tid);
     		}
-    ];
-    
-    $scope.tableParams = new NgTableParams({
-        page: 1,            // show first page
-        count: 10			// count per page
-    }, {
-        data: data
-    });
-    
-    $scope.runQuery = function() {
+    	}	
     	
-    	$('#statisticDiv').hide();
-    	$scope.dataLoaded = false;
-    	
-    	console.log("Run Query Button Clicked");
-    	var input = $('#queryInput').val();
-    	
-    	cartelAPIAll.queryAll()
-    		.$promise.then(
-    			function( value ) {
-    		
-    			},
-    			function( error ) {
-    				console.log( "Bad Request" );
-    			}
-    		);
-    	//code before the pause
-		setTimeout(function(){
-			$scope.highchartsNG.title = {
-	            text: 'Twitter Results for ' + input
- 	        },
-			$scope.highchartsNG.series = [{
-	    	        	name: "Trump Sentiment Analysis",
-	    	            data: [10, 15, 12, 8, 7, 1, 15, 10 , 8, 13]
-	    	        },
-	    	        {
-	    	        	name: "Sanders Sentiment Analysis",
-	    	            data: [8, 10, 6, 15, -1, 0, 3, 18 , 20, 10]
-	    	        }];
-			
-			 $scope.dataLoaded = true;
-			 $scope.$apply();
-			$('#statisticDiv').show();
-		}, 2000);
-    
-    };
-    
-    $scope.toogleLine = function() {
-    	$scope.highchartsNG.options = {
-    	    chart: {
-    	        type: 'line',
-    	        marginTop: 50
+    	$scope.highchartsNG = {
+    	        options: {
+    	            chart: {
+						backgroundColor: 'rgba(5, 5, 5, 0.7)',
+    	                type: 'column',
+    	                marginTop: 75,
+						color: "#ff5656"
+    	            },
+    	            legend: {
+        	            itemStyle: {
+        	            	color: "#FFF"
+        	            }
+        	        }
+    	        },
+    	        series: [{
+    	        	name: "Tweets",
+    	        	color: $scope.color,
+    	        	borderColor: $scope.color,
+    	            data: [10, 15, 12, 8, 7, 1, 15, 10 , 8, 13]
+    	        }],
+    	        yAxis: {
+    	        	labels: {
+	    	        	style: {
+							color: '#FFF'
+						}
+    	        	},
+    	            title: {
+    	                text: 'Sentiment',
+    	                style: {
+							color: '#FFF'
+						}
+    	            }
+    	        },
+    	        title: {
+    	        	y: 20,
+					style: {
+						color: '#FFF'
+					},
+    	            text: 'Changes in the public opinion of ' + $scope.chartTitle + ' over time'
+    	        },
+    	        xAxis: {
+    	        	labels: {
+	    	        	style: {
+							color: '#FFF'
+						}
+    	        	},
+    	            categories: [
+    	                'Jan',
+    	                'Feb',
+    	                'Mar',
+    	                'Apr',
+    	                'May',
+    	                'Jun',
+    	                'Jul',
+    	                'Aug',
+    	                'Sep',
+    	                'Oct',
+    	                'Nov',
+    	                'Dec'
+    	            ],
+    	            crosshair: true
+    	        },
+    	        loading: false
     	    }
-    	}
+    	
+    	$scope.dataLoaded = true;
+    	$scope.hideChart = false;
+
+    }
+    
+    $scope.buildChartLine = function() {
+    	
+    	$scope.tweetIDs1 = [];
+    	$scope.tweetIDs2 = [];
+    	
+    	var tweetsLength = $scope.tableData.length
+    	
+    	for (var i = 0; i < tweetsLength; i++) {
+    		if ( i < (tweetsLength / 2) ) {
+    			$scope.tweetIDs1.push($scope.tableData[i].tid);
+    		} else {
+    			$scope.tweetIDs2.push($scope.tableData[i].tid);
+    		}
+    	}	
+    	
+    	$scope.highchartsNG = {
+    	        options: {
+    	            chart: {
+						backgroundColor: 'rgba(5, 5, 5, 0.7)',
+    	                type: 'line',
+    	                marginTop: 75,
+						color: "#ff5656"
+    	            },
+    	            legend: {
+        	            itemStyle: {
+        	            	color: "#FFF"
+        	            }
+        	        }
+    	        },
+    	        series: [{
+    	        	name: "Tweets",
+    	        	color: $scope.color,
+    	            data: [10, 15, 12, 8, 7, 1, 15, 10 , 8, 13]
+    	        }],
+    	        yAxis: {
+    	        	labels: {
+	    	        	style: {
+							color: '#FFF'
+						}
+    	        	},
+    	            title: {
+    	                text: 'Sentiment',
+    	                style: {
+							color: '#FFF'
+						}
+    	            }
+    	        },
+    	        title: {
+    	        	y: 20,
+					style: {
+						color: '#FFF'
+					},
+    	            text: 'Changes in the public opinion of ' + $scope.chartTitle + ' over time'
+    	        },
+    	        xAxis: {
+    	        	labels: {
+	    	        	style: {
+							color: '#FFF'
+						}
+    	        	},
+    	            categories: [
+    	                'Jan',
+    	                'Feb',
+    	                'Mar',
+    	                'Apr',
+    	                'May',
+    	                'Jun',
+    	                'Jul',
+    	                'Aug',
+    	                'Sep',
+    	                'Oct',
+    	                'Nov',
+    	                'Dec'
+    	            ],
+    	            crosshair: true
+    	        },
+    	        loading: false
+    	    }
+    	
+    	$scope.dataLoaded = true;
+    	$scope.hideChart = false;
+
+    }
+    
+    $scope.toggleLine = function() {
+    	$scope.buildChartLine();
     	$scope.$apply();
     }
     
-    $scope.toogleBar = function() {
-    	$scope.highchartsNG.options = {
-    	    chart: {
-    	        type: 'column',
-    	        marginTop: 50
-    	    }
-    	}
+    $scope.toggleBar = function() {
+    	$scope.buildChartBar();
     	$scope.$apply();
     }
     
