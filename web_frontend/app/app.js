@@ -3,14 +3,14 @@
 // Declare app level module which depends on views, and components
 angular.module('myApp', [
   'ngRoute',
-  'ngSanitize',
   'myApp.homepage',
   'myApp.analysisView',
   'myApp.version',
   'myApp.cartelServices',
-  'myApp.teampage',
-  'myApp.twitterServices'
+  'myApp.teampage'
 ]).
-config(['$routeProvider', function($routeProvider) {
+config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
   $routeProvider.otherwise({redirectTo: '/homepage'});
+  $httpProvider.defaults.useXDomain = true;
+  delete $httpProvider.defaults.headers.common['X-Requested-With'];
 }]);
